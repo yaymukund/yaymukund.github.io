@@ -1,4 +1,4 @@
-.PHONY: post all preview
+.PHONY: post all preview deploy
 
 all: preview
 
