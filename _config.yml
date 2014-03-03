@@ -3,7 +3,7 @@
 # ----------------------- #
 
 url: http://yaymukund.github.io
-title: echo !$ >> blog
+title: cat !$ >> blog
 subtitle: A dumping ground for posting technical thoughts.
 author: Mukund Lakshman
 simple_search: http://google.com/search
