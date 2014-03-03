@@ -4,7 +4,7 @@ title:  Ranked-model and uniqueness constraints
 ---
 
 My new Rails project deals with tracks in a sorted playlist. To do this, I
-used the [ranked-model gem][] for Rails. It lets you order records by an
+used the [ranked-model gem][ranked-model] for Rails. It lets you order records by an
 integer column.
 
 ```ruby app/models/track.rb
