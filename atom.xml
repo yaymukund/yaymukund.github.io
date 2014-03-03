@@ -4,7 +4,7 @@
   <title><![CDATA[echo !$ >> blog]]></title>
   <link href="http://yaymukund.github.io/atom.xml" rel="self"/>
   <link href="http://yaymukund.github.io/"/>
-  <updated>2014-03-02T20:32:39-05:00</updated>
+  <updated>2014-03-02T20:33:58-05:00</updated>
   <id>http://yaymukund.github.io/</id>
   <author>
     <name><![CDATA[Mukund Lakshman]]></name>
@@ -19,7 +19,7 @@
     <updated>2014-03-02T00:00:00-05:00</updated>
     <id>http://yaymukund.github.io/blog/2014/03/02/rankedmodel-and-uniqueness-constraints</id>
     <content type="html"><![CDATA[<p>My new Rails project deals with tracks in a sorted playlist. To do this, I
-used the [ranked-model gem][] for Rails. It lets you order records by an
+used the <a href="https://github.com/mixonic/ranked-model">ranked-model gem</a> for Rails. It lets you order records by an
 integer column.</p>
 
 <figure class='code'><figcaption><span>app/models/track.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
