@@ -64,9 +64,9 @@ Failures:
 
 After banging my head a bit, I finally figured it out. Internally,
 `ranked-model` sets `track_order_position` to some number between -8388607 and
-8388607, the `MEDIUMINT` range in MySQL. This is all [explained in the
-ranked-model documentation][ranked-model-internals]. It's a clever and
-effective way to avoid constantly rearranging records.
+8388607, the `MEDIUMINT` range in MySQL. This is all
+[explained in the ranked-model documentation][ranked-model-internals]. It's a
+clever and effective way to avoid constantly rearranging records.
 
 Sometimes, it *does* need to rearrange records, though. When it does, it
 calls `rearrange_ranks`:
