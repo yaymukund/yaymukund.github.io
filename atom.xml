@@ -4,7 +4,7 @@
   <title><![CDATA[echo !$ >> blog]]></title>
   <link href="http://yaymukund.github.io/atom.xml" rel="self"/>
   <link href="http://yaymukund.github.io/"/>
-  <updated>2014-03-02T20:21:12-05:00</updated>
+  <updated>2014-03-02T20:32:39-05:00</updated>
   <id>http://yaymukund.github.io/</id>
   <author>
     <name><![CDATA[Mukund Lakshman]]></name>
@@ -18,10 +18,9 @@
     <link href="http://yaymukund.github.io/blog/2014/03/02/rankedmodel-and-uniqueness-constraints/"/>
     <updated>2014-03-02T00:00:00-05:00</updated>
     <id>http://yaymukund.github.io/blog/2014/03/02/rankedmodel-and-uniqueness-constraints</id>
-    <content type="html"><![CDATA[<p>I&rsquo;ve been playing with the gem <a href="https://github.com/mixonic/ranked-model">ranked-model</a>, which seems to be a promising
-sorting gem for Rails. It lets you manage lists of Rails models sorted by
-some integer column. I wanted to have a playlist of tracks, each with a
-position in the playlist:</p>
+    <content type="html"><![CDATA[<p>My new Rails project deals with tracks in a sorted playlist. To do this, I
+used the [ranked-model gem][] for Rails. It lets you order records by an
+integer column.</p>
 
 <figure class='code'><figcaption><span>app/models/track.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -118,10 +117,10 @@ position in the playlist:</p>
 </span></code></pre></td></tr></table></div></figure>
 
 <p>After banging my head a bit, I finally figured it out. Internally,
-<code>ranked-model</code> sets <code>track_order_position</code> to some number between
--8388607 and 8388607, the <code>MEDIUMINT</code> range in MySQL. This is all
-<a href="https://github.com/mixonic/ranked-model#internals">explained in the ranked-model documentation</a>. It&rsquo;s a
-clever and effective way to avoid constantly rearranging records.</p>
+<code>ranked-model</code> sets <code>track_order_position</code> to some number between -8388607 and
+8388607, the <code>MEDIUMINT</code> range in MySQL. This is all <a href="https://github.com/mixonic/ranked-model#internals">explained in the
+ranked-model documentation</a>. It&rsquo;s a clever and
+effective way to avoid constantly rearranging records.</p>
 
 <p>Sometimes, it <em>does</em> need to rearrange records, though. When it does, it
 calls <code>rearrange_ranks</code>:</p>
