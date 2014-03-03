@@ -4,7 +4,7 @@
   <title><![CDATA[cat !$ >> blog]]></title>
   <link href="http://yaymukund.github.io/atom.xml" rel="self"/>
   <link href="http://yaymukund.github.io/"/>
-  <updated>2014-03-02T20:44:02-05:00</updated>
+  <updated>2014-03-03T08:56:19-05:00</updated>
   <id>http://yaymukund.github.io/</id>
   <author>
     <name><![CDATA[Mukund Lakshman]]></name>
@@ -118,9 +118,9 @@ integer column.</p>
 
 <p>After banging my head a bit, I finally figured it out. Internally,
 <code>ranked-model</code> sets <code>track_order_position</code> to some number between -8388607 and
-8388607, the <code>MEDIUMINT</code> range in MySQL. This is all <a href="https://github.com/mixonic/ranked-model#internals">explained in the
-ranked-model documentation</a>. It&rsquo;s a clever and
-effective way to avoid constantly rearranging records.</p>
+8388607, the <code>MEDIUMINT</code> range in MySQL. This is all
+<a href="https://github.com/mixonic/ranked-model#internals">explained in the ranked-model documentation</a>. It&rsquo;s a
+clever and effective way to avoid constantly rearranging records.</p>
 
 <p>Sometimes, it <em>does</em> need to rearrange records, though. When it does, it
 calls <code>rearrange_ranks</code>:</p>
