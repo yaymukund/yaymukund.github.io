@@ -3,10 +3,9 @@ layout: post
 title:  Ranked-model and uniqueness constraints
 ---
 
-I've been playing with the gem [ranked-model][], which seems to be a promising
-sorting gem for Rails. It lets you manage lists of Rails models sorted by
-some integer column. I wanted to have a playlist of tracks, each with a
-position in the playlist:
+My new Rails project deals with tracks in a sorted playlist. To do this, I
+used the [ranked-model gem][] for Rails. It lets you order records by an
+integer column.
 
 ```ruby app/models/track.rb
 class Track < ActiveRecord::Base
@@ -64,10 +63,10 @@ Failures:
 ```
 
 After banging my head a bit, I finally figured it out. Internally,
-`ranked-model` sets `track_order_position` to some number between
--8388607 and 8388607, the `MEDIUMINT` range in MySQL. This is all
-[explained in the ranked-model documentation][ranked-model-internals]. It's a
-clever and effective way to avoid constantly rearranging records.
+`ranked-model` sets `track_order_position` to some number between -8388607 and
+8388607, the `MEDIUMINT` range in MySQL. This is all [explained in the
+ranked-model documentation][ranked-model-internals]. It's a clever and
+effective way to avoid constantly rearranging records.
 
 Sometimes, it *does* need to rearrange records, though. When it does, it
 calls `rearrange_ranks`:
