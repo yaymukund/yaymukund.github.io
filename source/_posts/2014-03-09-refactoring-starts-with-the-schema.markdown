@@ -83,7 +83,7 @@ track change in a transaction to avoid a race-condition.
 I decided to ditch the `playing` boolean field for a `played_at` datetime field
 and it magically solved all my problems.
 
-```ruby
+```ruby app/models/playlist.rb
 class Playlist < ActiveRecord::Base
   has_many :tracks, -> { order('tracks.track_order ASC') }
 
