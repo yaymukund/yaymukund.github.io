@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-posts_path='_posts';
+posts_path='source/_posts';
 today_date=$(date +%Y-%m-%d)
 
 typeset title;
