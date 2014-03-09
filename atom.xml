@@ -4,7 +4,7 @@
   <title><![CDATA[cat !$ >> blog]]></title>
   <link href="http://yaymukund.github.io/atom.xml" rel="self"/>
   <link href="http://yaymukund.github.io/"/>
-  <updated>2014-03-09T11:32:17-04:00</updated>
+  <updated>2014-03-09T11:33:05-04:00</updated>
   <id>http://yaymukund.github.io/</id>
   <author>
     <name><![CDATA[Mukund Lakshman]]></name>
@@ -142,7 +142,7 @@ track change in a transaction to avoid a race-condition.</p>
 <p>I decided to ditch the <code>playing</code> boolean field for a <code>played_at</code> datetime field
 and it magically solved all my problems.</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span>app/models/playlist.rb</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
