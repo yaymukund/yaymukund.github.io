@@ -100,5 +100,6 @@ finding the next track is just a matter of
 `tracks.order('track_order ASC').where(played_at: nil).first`. As a bonus, I
 can also easily check `played_at` to see if a track's been played.
 
-The right database schema makes bugs impossible at the lower levels of your
-architecture.
+Obviously, this kind of refactor is much easier for a small project, but it
+goes to show: the right database schema can make bugs impossible at the lower
+levels of your architecture.
