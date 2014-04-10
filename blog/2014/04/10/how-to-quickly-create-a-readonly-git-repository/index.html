@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>How to quickly create a read-only Git repository - cat !$ >> blog</title>
+  <meta name="author" content="Mukund Lakshman">
+
+  
+  <meta name="description" content="Today, I had to share a git repository to an interview candidate. It&rsquo;s a pain
+to grant and revoke access via GitHub, so I decided to host it &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yaymukund.github.io/blog/2014/04/10/how-to-quickly-create-a-readonly-git-repository">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="cat !$ >> blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">cat !$ >> blog</a></h1>
+  
+    <h2>A dumping ground for posting technical thoughts.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:yaymukund.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">How to quickly create a read-only Git repository</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-10T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Today, I had to share a git repository to an interview candidate. It&rsquo;s a pain
+to grant and revoke access via GitHub, so I decided to host it myself.</p>
+
+<p>A cloned copy of a git repository can itself be cloned. To share a repository
+easily, just clone it on your webserver:</p>
+
+<figure class='code'><figcaption><span>how-to-create-a-git-repository.sh</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>ssh my-webserver
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>public
+</span><span class='line'><span class="nv">$ </span>git clone git@github.com:yaymukund/foo.git --bare foo.git
+</span><span class='line'><span class="nv">$ </span>ls
+</span><span class='line'>foo.git
+</span><span class='line'><span class="nv">$ </span><span class="nb">cd </span>foo.git
+</span><span class='line'><span class="nv">$ </span>git update-server-info
+</span></code></pre></td></tr></table></div></figure>
+
+<p>Now, anyone can clone it:</p>
+
+<figure class='code'><figcaption><span>cloning-a-git-repository.sh</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>git clone http://my-webserver.com/foo.git
+</span></code></pre></td></tr></table></div></figure>
+
+<h2>Hey, what&rsquo;s with that <code>update-server-info</code> stuff?</h2>
+
+<p>Good catch! <code>git</code> has &ldquo;smart&rdquo; repositories and &ldquo;dumb&rdquo; repositories. We&rsquo;ve
+made a dumb repository, which is useful for quickly sharing code. It&rsquo;s not
+a good long-term solution. You cannot push to a &ldquo;dumb&rdquo; repository easily.</p>
+
+<h2>References</h2>
+
+<p><a href="http://stackoverflow.com/a/4203210/1207223">Git, WebDAV, and basic web hosting</a>
+<a href="http://git-scm.com/book/en/Git-on-the-Server-Public-Access">Git on the Server - Public Access</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Mukund Lakshman</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-10T00:00:00-04:00" pubdate data-updated="true"></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/04/09/creating-a-new-app-using-embercli/" title="Previous Post: Creating a new app using ember-cli">&laquo; Creating a new app using ember-cli</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/10/how-to-quickly-create-a-readonly-git-repository/">How to quickly create a read-only Git repository</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/09/creating-a-new-app-using-embercli/">Creating a new app using ember-cli</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/09/refactoring-starts-with-the-schema/">Refactoring starts with the schema</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/02/rankedmodel-and-uniqueness-constraints/">Ranked-model and uniqueness constraints</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Mukund Lakshman -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
