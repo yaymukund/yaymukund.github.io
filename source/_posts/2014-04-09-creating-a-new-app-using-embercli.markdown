@@ -57,7 +57,7 @@ Since it's a proxy, you don't have to worry about CORS or configuring URLs
 in the router. It also conveniently lets you host your API on a separate
 server.
 
-`ember-cli`'s api is still undergoing rapid development, but if I were
-starting a new Ember.js app, it's a good place to start.
+`ember-cli`'s api is still undergoing rapid development, but I'll be using it
+for my future Ember projects.
 
 [ember-cli]: https://github.com/stefanpenner/ember-cli/
