@@ -1,0 +1,271 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Creating a new app using ember-cli - cat !$ >> blog</title>
+  <meta name="author" content="Mukund Lakshman">
+
+  
+  <meta name="description" content="ember-cli is a command-line tool for setting up a new Ember.js
+application. Creating an application should be familiar to anyone familiar
+with Rails &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yaymukund.github.io/blog/2014/04/09/creating-a-new-app-using-embercli">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="cat !$ >> blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">cat !$ >> blog</a></h1>
+  
+    <h2>A dumping ground for posting technical thoughts.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:yaymukund.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Creating a new app using ember-cli</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-09T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="https://github.com/stefanpenner/ember-cli/">ember-cli</a> is a command-line tool for setting up a new Ember.js
+application. Creating an application should be familiar to anyone familiar
+with Rails.</p>
+
+<figure class='code'><figcaption><span>creating-a-new-app.sh</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># Create an app.</span>
+</span><span class='line'><span class="nv">$ </span>npm install -g ember-cli
+</span><span class='line'><span class="nv">$ </span>ember new myapp
+</span><span class='line'>
+</span><span class='line'><span class="c"># Build index.html, app.js, app.css to dist/</span>
+</span><span class='line'><span class="nv">$ </span>ember build --env &lt;environment&gt;
+</span><span class='line'>
+</span><span class='line'><span class="c"># Start a watch server.</span>
+</span><span class='line'><span class="nv">$ </span>ember server
+</span></code></pre></td></tr></table></div></figure>
+
+<p>It produces the following directory structure:</p>
+
+<figure class='code'><figcaption><span>directory-structure.txt</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='text'><span class='line'>$ tree -L 2
+</span><span class='line'>.
+</span><span class='line'>├── Brocfile.js        - Used by Broccoli, Ember&#39;s new asset pipeline.
+</span><span class='line'>├── api-stub           - Stub routes for tests.
+</span><span class='line'>├── app                - Your main Ember application.
+</span><span class='line'>├── bower.json         - Specify external dependencies.
+</span><span class='line'>├── config
+</span><span class='line'>│   └── environment.js - This file produces the `ENV` variable.
+</span><span class='line'>├── node_modules
+</span><span class='line'>├── package.json
+</span><span class='line'>├── public             - Files in this directory get built alongside your app.
+</span><span class='line'>├── tests
+</span><span class='line'>└── vendor
+</span><span class='line'>
+</span><span class='line'>28 directories, 16 files
+</span></code></pre></td></tr></table></div></figure>
+
+<h2>Connecting to an API server</h2>
+
+<p>The <code>ember server</code> command comes with a useful argument that lets you forward
+API requests to your server.</p>
+
+<figure class='code'><figcaption><span>forward-requests-to-localhost-3500.zsh</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c"># Any API requests will be proxied to localhost:3500. For example:</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c">#   store.find(&#39;post&#39;, 1)</span>
+</span><span class='line'><span class="c">#</span>
+</span><span class='line'><span class="c"># This would perform a GET http://localhost:3500/posts/1</span>
+</span><span class='line'><span class="nv">$ </span>ember server --proxy-port 3500
+</span></code></pre></td></tr></table></div></figure>
+
+<p>Since it&rsquo;s a proxy, you don&rsquo;t have to worry about CORS or configuring URLs
+in the router. It also conveniently lets you host your API on a separate
+server.</p>
+
+<p>Anyway, there are lots more goodies.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Mukund Lakshman</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-09T00:00:00-04:00" pubdate data-updated="true"></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/09/refactoring-starts-with-the-schema/" title="Previous Post: Refactoring starts with the schema">&laquo; Refactoring starts with the schema</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/09/creating-a-new-app-using-embercli/">Creating a new app using ember-cli</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/09/refactoring-starts-with-the-schema/">Refactoring starts with the schema</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/02/rankedmodel-and-uniqueness-constraints/">Ranked-model and uniqueness constraints</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Mukund Lakshman -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
