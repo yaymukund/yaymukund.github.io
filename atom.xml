@@ -4,7 +4,7 @@
   <title><![CDATA[cat !$ >> blog]]></title>
   <link href="http://yaymukund.github.io/atom.xml" rel="self"/>
   <link href="http://yaymukund.github.io/"/>
-  <updated>2014-04-09T23:03:14-04:00</updated>
+  <updated>2014-04-10T11:12:33-04:00</updated>
   <id>http://yaymukund.github.io/</id>
   <author>
     <name><![CDATA[Mukund Lakshman]]></name>
@@ -99,8 +99,8 @@ API requests to your server.</p>
 in the router. It also conveniently lets you host your API on a separate
 server.</p>
 
-<p><code>ember-cli</code>&rsquo;s api is still undergoing rapid development, but if I were
-starting a new Ember.js app, it&rsquo;s a good place to start.</p>
+<p><code>ember-cli</code>&rsquo;s api is still undergoing rapid development, but I&rsquo;ll be using it
+for my future Ember projects.</p>
 ]]></content>
   </entry>
   
