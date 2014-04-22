@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Ember.js authentication without injections
+title:  Ember.js sessions without injections
 ---
 
 I had a simple Ember app where I wanted to add authentication. My
