@@ -4,7 +4,7 @@
   <title><![CDATA[cat !$ >> blog]]></title>
   <link href="http://yaymukund.github.io/atom.xml" rel="self"/>
   <link href="http://yaymukund.github.io/"/>
-  <updated>2014-04-22T09:45:43-04:00</updated>
+  <updated>2014-04-22T11:45:46-04:00</updated>
   <id>http://yaymukund.github.io/</id>
   <author>
     <name><![CDATA[Mukund Lakshman]]></name>
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Ember.js authentication without injections]]></title>
-    <link href="http://yaymukund.github.io/blog/2014/04/21/emberjs-authentication-without-injections/"/>
+    <title type="html"><![CDATA[Ember.js sessions without injections]]></title>
+    <link href="http://yaymukund.github.io/blog/2014/04/21/emberjs-sessions-without-injections/"/>
     <updated>2014-04-21T00:00:00-04:00</updated>
-    <id>http://yaymukund.github.io/blog/2014/04/21/emberjs-authentication-without-injections</id>
+    <id>http://yaymukund.github.io/blog/2014/04/21/emberjs-sessions-without-injections</id>
     <content type="html"><![CDATA[<p>I had a simple Ember app where I wanted to add authentication. My
 requirements were thus:</p>
 
