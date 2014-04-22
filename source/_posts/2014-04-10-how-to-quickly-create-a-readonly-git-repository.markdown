@@ -33,5 +33,5 @@ a good long-term solution. You cannot push to a "dumb" repository easily.
 
 ## References
 
-[Git, WebDAV, and basic web hosting](http://stackoverflow.com/a/4203210/1207223)
-[Git on the Server - Public Access](http://git-scm.com/book/en/Git-on-the-Server-Public-Access)
+- [Git, WebDAV, and basic web hosting](http://stackoverflow.com/a/4203210/1207223)
+- [Git on the Server - Public Access](http://git-scm.com/book/en/Git-on-the-Server-Public-Access)
