@@ -4,7 +4,7 @@
   <title><![CDATA[cat !$ >> blog]]></title>
   <link href="http://yaymukund.github.io/atom.xml" rel="self"/>
   <link href="http://yaymukund.github.io/"/>
-  <updated>2014-04-10T13:58:07-04:00</updated>
+  <updated>2014-04-22T09:43:16-04:00</updated>
   <id>http://yaymukund.github.io/</id>
   <author>
     <name><![CDATA[Mukund Lakshman]]></name>
@@ -12,6 +12,229 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ember.js authentication without injections]]></title>
+    <link href="http://yaymukund.github.io/blog/2014/04/21/emberjs-authentication-without-injections/"/>
+    <updated>2014-04-21T00:00:00-04:00</updated>
+    <id>http://yaymukund.github.io/blog/2014/04/21/emberjs-authentication-without-injections</id>
+    <content type="html"><![CDATA[<p>I had a simple Ember app where I wanted to add authentication. My
+requirements were thus:</p>
+
+<ul>
+<li>A <code>session</code> object available to the rest of my application.</li>
+<li>A <code>/login</code> route that calls <code>POST /session</code>.</li>
+<li>Load the <code>user</code> object through a <code>&lt;meta&gt;</code> tag if one exists.</li>
+</ul>
+
+<h2>What are my options?</h2>
+
+<p>I first looked through some existing examples and libraries. Most of them
+use the <a href="injections-api">injections API</a> to expose the session object. There
+are only a few points in my app that interact with the session, so the
+injections seem like overkill.</p>
+
+<h2>Store the session in a controller</h2>
+
+<p>The Ember API documentation advises:</p>
+
+<blockquote><p>In general, your models will have properties that are saved to the server,<br/>while controllers will have properties that your app does not need to save to<br/>the server.</p><footer><strong>Ember.js Guides</strong> <cite><a href='http://emberjs.com/guides/controllers/'>emberjs.com/guides/controllers/&hellip;</a></cite></footer></blockquote>
+
+<p>Okay, great, what does this look like?</p>
+
+<figure class='code'><figcaption><span>app/controllers/session.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">export</span> <span class="k">default</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Controller</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">user</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">isAuthenticated</span><span class="o">:</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">computed</span><span class="p">.</span><span class="nx">notEmpty</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">),</span>
+</span><span class='line'>  <span class="nx">loadUser</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">user</span><span class="p">,</span> <span class="nx">store</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Load JSON into the store.</span>
+</span><span class='line'>    <span class="nx">store</span><span class="p">.</span><span class="nx">pushPayload</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="nx">payload</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1">// Fetch the user we just loaded without triggering a GET.</span>
+</span><span class='line'>    <span class="nx">user</span> <span class="o">=</span> <span class="nx">store</span><span class="p">.</span><span class="nx">getById</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="nx">payload</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="nx">user</span><span class="p">);</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>To fetch the session from a route, <a href="controller-for">use controllerFor</a>
+(<code>this.controllerFor(&#39;session&#39;)</code>). To fetch the session from a controller,
+<a href="needs-api">use the needs API</a> (<code>needs: [&#39;session&#39;]</code>).</p>
+
+<h2>Add a login route and authenticate method.</h2>
+
+<p>Once we have this architecture, stuff seems to fall into place. The route is
+a standard route that defines a single authenticate action. Note that the
+login and password are neatly kept within the route&rsquo;s controller.</p>
+
+<figure class='code'><figcaption><span>app/routes/login.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">export</span> <span class="k">default</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// Redirect if they&#39;re already logged in.</span>
+</span><span class='line'>  <span class="nx">beforeModel</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">session</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">controllerFor</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">session</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;isAuthenticated&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">},</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">actions</span><span class="o">:</span> <span class="p">{</span>
+</span><span class='line'>    <span class="nx">authenticate</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span>
+</span><span class='line'>          <span class="nx">session</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">controllerFor</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">),</span>
+</span><span class='line'>          <span class="nx">credentials</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>            <span class="nx">login</span><span class="o">:</span> <span class="nx">self</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;controller.login&#39;</span><span class="p">),</span>
+</span><span class='line'>            <span class="nx">password</span><span class="o">:</span> <span class="nx">self</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;controller.password&#39;</span><span class="p">)</span>
+</span><span class='line'>          <span class="p">};</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="nx">$</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/session&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">user</span><span class="o">:</span> <span class="nx">credentials</span> <span class="p">}).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="c1">// If a session has a previous transition, retry it. See:</span>
+</span><span class='line'>        <span class="c1">//</span>
+</span><span class='line'>        <span class="c1">//   http://goo.gl/Kh0Yx7</span>
+</span><span class='line'>        <span class="kd">var</span> <span class="nx">transition</span> <span class="o">=</span> <span class="nx">session</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;previousTransition&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="nx">session</span><span class="p">.</span><span class="nx">loadUser</span><span class="p">(</span><span class="nx">payload</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">if</span> <span class="p">(</span><span class="nx">transition</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">transition</span><span class="p">.</span><span class="nx">retry</span><span class="p">();</span>
+</span><span class='line'>        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>          <span class="nx">self</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">);</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>      <span class="p">});</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h2>Loading the session from a <code>&lt;meta&gt;</code> tag</h2>
+
+<p>If the user has an existing session when they load the page, the server might
+write a <code>&lt;meta&gt;</code> tag with the current user object. For example:</p>
+
+<figure class='code'><figcaption><span>index.html</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;current-user&quot;</span> <span class="na">content=</span><span class="s">&quot;{ user: { id: 1, login: &#39;yaymukund&#39; }}&quot;</span><span class="nt">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>We can load this information when the app starts. We do this by implementing
+<code>beforeModel</code> on the <code>ApplicationRoute</code> itself:</p>
+
+<figure class='code'><figcaption><span>app/routes/application.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">export</span> <span class="k">default</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">beforeModel</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">transition</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">store</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">,</span>
+</span><span class='line'>        <span class="nx">session</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">controllerFor</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">),</span>
+</span><span class='line'>        <span class="nx">json</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;meta[name=&quot;current-user&quot;]&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="nx">json</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">session</span><span class="p">.</span><span class="nx">loadUser</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">json</span><span class="p">));</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h2>Bonus! - Adding an authenticated route</h2>
+
+<p>Now that you have authentication, you can easily restrict access to parts of
+your application:</p>
+
+<figure class='code'><figcaption><span>app/routes/members-only.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="kr">export</span> <span class="k">default</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Route</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+</span><span class='line'>  <span class="nx">beforeModel</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">transition</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">session</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">controllerFor</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">session</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;isAuthenticated&#39;</span><span class="p">))</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">session</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;previousTransition&#39;</span><span class="p">,</span> <span class="nx">transition</span><span class="p">);</span>
+</span><span class='line'>      <span class="k">this</span><span class="p">.</span><span class="nx">transitionTo</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<p>Since we set <code>previousTransition</code>, the user will be redirected after login.</p>
+
+<h2>References</h2>
+
+<p>Much credit due to <a href="http://alexspeller.com/">Alex Speller</a> for tirelessly
+answering my questions on IRC.</p>
+
+<ul>
+<li><a href="http://madhatted.com/2013/8/31/emberfest-presentation-complex-architectures-in-ember">Complex Architectures in Ember</a></li>
+<li><a href="http://emberjs.com/guides/controllers/dependencies-between-controllers/">Ember.js Guides - The needs API</a></li>
+<li><a href="http://emberjs.com/api/classes/Ember.Route.html#method_controllerFor">Ember.js API - controllerFor</a></li>
+</ul>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How to quickly create a read-only Git repository]]></title>
@@ -54,8 +277,10 @@ a good long-term solution. You cannot push to a &ldquo;dumb&rdquo; repository ea
 
 <h2>References</h2>
 
-<p><a href="http://stackoverflow.com/a/4203210/1207223">Git, WebDAV, and basic web hosting</a>
-<a href="http://git-scm.com/book/en/Git-on-the-Server-Public-Access">Git on the Server - Public Access</a></p>
+<ul>
+<li><a href="http://stackoverflow.com/a/4203210/1207223">Git, WebDAV, and basic web hosting</a></li>
+<li><a href="http://git-scm.com/book/en/Git-on-the-Server-Public-Access">Git on the Server - Public Access</a></li>
+</ul>
 ]]></content>
   </entry>
   
