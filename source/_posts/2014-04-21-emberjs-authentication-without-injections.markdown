@@ -36,13 +36,11 @@ export default Ember.Controller.extend({
   user: null,
   isAuthenticated: Ember.computed.notEmpty('user'),
   loadUser: function(payload) {
-    var user, store = this.store;
-
     // Load JSON into the store.
-    store.pushPayload('user', payload);
+    this.store.pushPayload('user', payload);
 
     // Fetch the user we just loaded without triggering a GET.
-    user = store.getById('user', payload.user.id);
+    var user = this.store.getById('user', payload.user.id);
 
     this.set('user', user);
   }
@@ -113,8 +111,7 @@ We can load this information when the app starts. We do this by implementing
 ```javascript app/routes/application.js
 export default Ember.Route.extend({
   beforeModel: function(transition) {
-    var store = this.store,
-        session = this.controllerFor('session'),
+    var session = this.controllerFor('session'),
         json = $('meta[name="current-user"]').attr('content');
 
     if (json) {
