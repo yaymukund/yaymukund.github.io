@@ -102,12 +102,12 @@ requirements were thus:</p>
 <li>Load the <code>user</code> object through a <code>&lt;meta&gt;</code> tag if one exists.</li>
 </ul>
 
-<h2>What are my options?</h2>
+<h2>What are the options?</h2>
 
 <p>I first looked through some existing examples and libraries. Most of them
 use the <a href="injections-api">injections API</a> to expose the session object. There
-are only a few points in my app that interact with the session, so the
-injections seem like overkill.</p>
+are only a few points in my app that interact with the session, so injections
+seemed like overkill.</p>
 
 <h2>Store the session in a controller</h2>
 
@@ -151,9 +151,9 @@ injections seem like overkill.</p>
 
 <h2>Add a login route and authenticate method.</h2>
 
-<p>Once we have this architecture, stuff seems to fall into place. The route is
-a standard route that defines a single authenticate action. Note that the
-login and password are neatly kept within the route&rsquo;s controller.</p>
+<p>Once I had this architecture, stuff fell into place. The route is a standard
+route that defines a single authenticate action. Note that the login and
+password are neatly kept within the route&rsquo;s controller.</p>
 
 <figure class='code'><figcaption><span>app/routes/login.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -238,8 +238,8 @@ write a <code>&lt;meta&gt;</code> tag with the current user object. For example:
 </pre></td><td class='code'><pre><code class='html'><span class='line'><span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;current-user&quot;</span> <span class="na">content=</span><span class="s">&quot;{ user: { id: 1, login: &#39;yaymukund&#39; }}&quot;</span><span class="nt">&gt;</span>
 </span></code></pre></td></tr></table></div></figure>
 
-<p>We can load this information when the app starts. We do this by implementing
-<code>beforeModel</code> on the <code>ApplicationRoute</code> itself:</p>
+<p>I loaded this session information when the app starts in the <code>beforeModel</code> hook
+of the <code>ApplicationRoute</code> itself:</p>
 
 <figure class='code'><figcaption><span>app/routes/application.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -265,8 +265,8 @@ write a <code>&lt;meta&gt;</code> tag with the current user object. For example:
 
 <h2>Bonus! - Adding an authenticated route</h2>
 
-<p>Now that you have authentication, you can easily restrict access to parts of
-your application:</p>
+<p>With these routes in place, it&rsquo;s simple to restrict access to parts of the
+application:</p>
 
 <figure class='code'><figcaption><span>app/routes/members-only.js</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -290,11 +290,9 @@ your application:</p>
 </span><span class='line'><span class="p">});</span>
 </span></code></pre></td></tr></table></div></figure>
 
-<p>Since we set <code>previousTransition</code>, the user will be redirected after login.</p>
-
 <h2>References</h2>
 
-<p>Much credit due to <a href="http://alexspeller.com/">Alex Speller</a> for tirelessly
+<p>A big thanks to <a href="http://alexspeller.com/">Alex Speller</a> for tirelessly
 answering my questions on IRC.</p>
 
 <ul>
