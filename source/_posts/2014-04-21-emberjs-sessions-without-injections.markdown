@@ -10,12 +10,12 @@ requirements were thus:
 - A `/login` route that calls `POST /session`.
 - Load the `user` object through a `<meta>` tag if one exists.
 
-## What are my options?
+## What are the options?
 
 I first looked through some existing examples and libraries. Most of them
 use the [injections API](injections-api) to expose the session object. There
-are only a few points in my app that interact with the session, so the
-injections seem like overkill.
+are only a few points in my app that interact with the session, so injections
+seemed like overkill.
 
 [injections-api]: http://emberjs.com/api/classes/Ember.Application.html#method_inject
 
@@ -53,9 +53,9 @@ To fetch the session from a route, [use controllerFor](controller-for)
 
 ## Add a login route and authenticate method.
 
-Once we have this architecture, stuff seems to fall into place. The route is
-a standard route that defines a single authenticate action. Note that the
-login and password are neatly kept within the route's controller.
+Once I had this architecture, stuff fell into place. The route is a standard
+route that defines a single authenticate action. Note that the login and
+password are neatly kept within the route's controller.
 
 ```javascript app/routes/login.js
 export default Ember.Route.extend({
@@ -105,8 +105,8 @@ write a `<meta>` tag with the current user object. For example:
 <meta name="current-user" content="{ user: { id: 1, login: 'yaymukund' }}">
 ```
 
-We can load this information when the app starts. We do this by implementing
-`beforeModel` on the `ApplicationRoute` itself:
+I loaded this session information when the app starts in the `beforeModel` hook
+of the `ApplicationRoute` itself:
 
 ```javascript app/routes/application.js
 export default Ember.Route.extend({
@@ -123,8 +123,8 @@ export default Ember.Route.extend({
 
 ## Bonus! - Adding an authenticated route
 
-Now that you have authentication, you can easily restrict access to parts of
-your application:
+With these routes in place, it's simple to restrict access to parts of the
+application:
 
 ```javascript app/routes/members-only.js
 export default Ember.Route.extend({
@@ -139,14 +139,12 @@ export default Ember.Route.extend({
 });
 ```
 
-Since we set `previousTransition`, the user will be redirected after login.
-
 [needs-api]: http://emberjs.com/guides/controllers/dependencies-between-controllers/
 [controller-for]: http://emberjs.com/api/classes/Ember.Route.html#method_controllerFor
 
 ## References
 
-Much credit due to [Alex Speller](http://alexspeller.com/) for tirelessly
+A big thanks to [Alex Speller](http://alexspeller.com/) for tirelessly
 answering my questions on IRC.
 
 - [Complex Architectures in Ember](http://madhatted.com/2013/8/31/emberfest-presentation-complex-architectures-in-ember)
