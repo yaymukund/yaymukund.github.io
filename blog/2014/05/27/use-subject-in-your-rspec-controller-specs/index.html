@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Use subject in your RSpec controller specs - cat !$ >> blog</title>
+  <meta name="author" content="Mukund Lakshman">
+
+  
+  <meta name="description" content="Use subject in RSpec controller specs This is a very common issue I see with RSpec controller specs. Bad 1
+2
+3
+4
+5
+6
+7
+before do get :show
+end it &# &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yaymukund.github.io/blog/2014/05/27/use-subject-in-your-rspec-controller-specs">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="cat !$ >> blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">cat !$ >> blog</a></h1>
+  
+    <h2>A dumping ground for posting technical thoughts.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:yaymukund.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Use subject in your RSpec controller specs</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-27T00:00:00-04:00" pubdate data-updated="true"></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>Use subject in RSpec controller specs</h2>
+
+<p>This is a very common issue I see with RSpec controller specs.</p>
+
+<h3>Bad</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">get</span> <span class="ss">:show</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">it</span> <span class="s1">&#39;returns 200&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="s1">&#39;200&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h3>Good</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">subject</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">get</span> <span class="ss">:show</span>
+</span><span class='line'>  <span class="n">response</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">it</span> <span class="s1">&#39;returns 200&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span><span class="n">subject</span><span class="o">.</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="s1">&#39;200&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h3>Why is the first method preferable?</h3>
+
+<ul>
+<li><p>It&rsquo;s more semantic. The request is not a prerequesite for the thing you&rsquo;re
+testing. It <em>is</em> the thing you&rsquo;re testing.</p></li>
+<li><p>It allows you to have nested <code>before</code> blocks to test subconditions:</p></li>
+</ul>
+<div class="highlight"><pre><code class="ruby">  <span class="n">before</span> <span class="k">do</span>
+    <span class="n">get</span> <span class="ss">:show</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="s1">&#39;responds 400&#39;</span> <span class="k">do</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="s1">&#39;400&#39;</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="n">context</span> <span class="s1">&#39;as admin&#39;</span> <span class="k">do</span>
+    <span class="n">before</span> <span class="k">do</span>
+      <span class="n">sign_in</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">it</span> <span class="s1">&#39;responds 200&#39;</span> <span class="k">do</span>
+      <span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="s1">&#39;200&#39;</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>The second test will fail! <code>before</code> blocks are executed in the order
+  they&rsquo;re declared, so you will perform the <code>get</code>, receive <code>400</code>, and
+  then sign in as an admin.</p>
+
+<p>Instead:</p>
+<div class="highlight"><pre><code class="ruby">  <span class="n">subject</span> <span class="k">do</span>
+    <span class="n">get</span> <span class="ss">:show</span>
+    <span class="n">response</span>
+  <span class="k">end</span>
+
+  <span class="n">context</span> <span class="s1">&#39;as admin&#39;</span> <span class="k">do</span>
+    <span class="n">before</span> <span class="k">do</span>
+      <span class="n">sign_in</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">it</span> <span class="s1">&#39;responds 200&#39;</span> <span class="k">do</span>
+      <span class="n">expect</span><span class="p">(</span><span class="n">subject</span><span class="o">.</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="s1">&#39;200&#39;</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p><code>subject</code> blocks are executed lazily, so that will work!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Mukund Lakshman</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-27T00:00:00-04:00" pubdate data-updated="true"></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/04/21/emberjs-sessions-without-injections/" title="Previous Post: Ember.js sessions without injections">&laquo; Ember.js sessions without injections</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/05/27/use-subject-in-your-rspec-controller-specs/">Use subject in your RSpec controller specs</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/21/emberjs-sessions-without-injections/">Ember.js sessions without injections</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/10/how-to-quickly-create-a-readonly-git-repository/">How to quickly create a read-only Git repository</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/04/09/creating-a-new-app-using-embercli/">Creating a new app using ember-cli</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/09/refactoring-starts-with-the-schema/">Refactoring starts with the schema</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Mukund Lakshman -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

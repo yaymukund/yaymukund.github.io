@@ -4,7 +4,7 @@
   <title><![CDATA[cat !$ >> blog]]></title>
   <link href="http://yaymukund.github.io/atom.xml" rel="self"/>
   <link href="http://yaymukund.github.io/"/>
-  <updated>2014-04-24T15:41:15-04:00</updated>
+  <updated>2014-05-27T11:53:21-04:00</updated>
   <id>http://yaymukund.github.io/</id>
   <author>
     <name><![CDATA[Mukund Lakshman]]></name>
@@ -12,6 +12,102 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Use subject in your RSpec controller specs]]></title>
+    <link href="http://yaymukund.github.io/blog/2014/05/27/use-subject-in-your-rspec-controller-specs/"/>
+    <updated>2014-05-27T00:00:00-04:00</updated>
+    <id>http://yaymukund.github.io/blog/2014/05/27/use-subject-in-your-rspec-controller-specs</id>
+    <content type="html"><![CDATA[<h2>Use subject in RSpec controller specs</h2>
+
+<p>This is a very common issue I see with RSpec controller specs.</p>
+
+<h3>Bad</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">before</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">get</span> <span class="ss">:show</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">it</span> <span class="s1">&#39;returns 200&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="s1">&#39;200&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h3>Good</h3>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">subject</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">get</span> <span class="ss">:show</span>
+</span><span class='line'>  <span class="n">response</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">it</span> <span class="s1">&#39;returns 200&#39;</span> <span class="k">do</span>
+</span><span class='line'>  <span class="n">expect</span><span class="p">(</span><span class="n">subject</span><span class="o">.</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="s1">&#39;200&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+<h3>Why is the first method preferable?</h3>
+
+<ul>
+<li><p>It&rsquo;s more semantic. The request is not a prerequesite for the thing you&rsquo;re
+testing. It <em>is</em> the thing you&rsquo;re testing.</p></li>
+<li><p>It allows you to have nested <code>before</code> blocks to test subconditions:</p></li>
+</ul>
+<div class="highlight"><pre><code class="ruby">  <span class="n">before</span> <span class="k">do</span>
+    <span class="n">get</span> <span class="ss">:show</span>
+  <span class="k">end</span>
+
+  <span class="n">it</span> <span class="s1">&#39;responds 400&#39;</span> <span class="k">do</span>
+    <span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="s1">&#39;400&#39;</span><span class="p">)</span>
+  <span class="k">end</span>
+
+  <span class="n">context</span> <span class="s1">&#39;as admin&#39;</span> <span class="k">do</span>
+    <span class="n">before</span> <span class="k">do</span>
+      <span class="n">sign_in</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">it</span> <span class="s1">&#39;responds 200&#39;</span> <span class="k">do</span>
+      <span class="n">expect</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="s1">&#39;200&#39;</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p>The second test will fail! <code>before</code> blocks are executed in the order
+  they&rsquo;re declared, so you will perform the <code>get</code>, receive <code>400</code>, and
+  then sign in as an admin.</p>
+
+<p>Instead:</p>
+<div class="highlight"><pre><code class="ruby">  <span class="n">subject</span> <span class="k">do</span>
+    <span class="n">get</span> <span class="ss">:show</span>
+    <span class="n">response</span>
+  <span class="k">end</span>
+
+  <span class="n">context</span> <span class="s1">&#39;as admin&#39;</span> <span class="k">do</span>
+    <span class="n">before</span> <span class="k">do</span>
+      <span class="n">sign_in</span><span class="p">(</span><span class="n">admin</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="n">it</span> <span class="s1">&#39;responds 200&#39;</span> <span class="k">do</span>
+      <span class="n">expect</span><span class="p">(</span><span class="n">subject</span><span class="o">.</span><span class="n">code</span><span class="p">)</span><span class="o">.</span><span class="n">to</span> <span class="n">eq</span><span class="p">(</span><span class="s1">&#39;200&#39;</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+</code></pre></div>
+<p><code>subject</code> blocks are executed lazily, so that will work!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Ember.js sessions without injections]]></title>

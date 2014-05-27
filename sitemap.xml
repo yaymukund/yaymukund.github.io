@@ -4,36 +4,42 @@
         <loc>
             http://yaymukund.github.io/blog/2014/03/02/rankedmodel-and-uniqueness-constraints/
         </loc>
-        <lastmod>2014-03-03T08:54:44-05:00</lastmod>
+        <lastmod>2014-05-27T11:48:48-04:00</lastmod>
     </url>
     <url>
         <loc>http://yaymukund.github.io/blog/2014/03/09/refactoring-starts-with-the-schema/</loc>
-        <lastmod>2014-03-10T13:17:36-04:00</lastmod>
+        <lastmod>2014-05-27T11:48:48-04:00</lastmod>
     </url>
     <url>
         <loc>http://yaymukund.github.io/blog/2014/04/09/creating-a-new-app-using-embercli/</loc>
-        <lastmod>2014-04-10T11:12:08-04:00</lastmod>
+        <lastmod>2014-05-27T11:48:48-04:00</lastmod>
     </url>
     <url>
         <loc>
             http://yaymukund.github.io/blog/2014/04/10/how-to-quickly-create-a-readonly-git-repository/
         </loc>
-        <lastmod>2014-04-22T09:38:11-04:00</lastmod>
+        <lastmod>2014-05-27T11:48:48-04:00</lastmod>
     </url>
     <url>
         <loc>http://yaymukund.github.io/blog/2014/04/21/emberjs-sessions-without-injections/</loc>
-        <lastmod>2014-04-24T15:40:34-04:00</lastmod>
+        <lastmod>2014-05-27T11:48:48-04:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://yaymukund.github.io/blog/2014/05/27/use-subject-in-your-rspec-controller-specs/
+        </loc>
+        <lastmod>2014-05-27T11:51:50-04:00</lastmod>
     </url>
     <url>
         <loc>http://yaymukund.github.io/blog/archives/</loc>
-        <lastmod>2014-04-24T15:40:34-04:00</lastmod>
+        <lastmod>2014-05-27T11:51:50-04:00</lastmod>
     </url>
     <url>
         <loc>http://yaymukund.github.io/</loc>
-        <lastmod>2014-04-24T15:40:34-04:00</lastmod>
+        <lastmod>2014-05-27T11:51:50-04:00</lastmod>
     </url>
     <url>
         <loc>http://yaymukund.github.io/robots.txt</loc>
-        <lastmod>2014-03-02T20:20:38-05:00</lastmod>
+        <lastmod>2014-05-27T11:48:48-04:00</lastmod>
     </url>
 </urlset>
